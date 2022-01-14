@@ -39,9 +39,9 @@ The lesson materials were adapted from the UC Davis Data Lab's [Intro to Cloud C
 
 The **shell** is a computer program that uses a command line interface (CLI) to give commands made by your keyboard to your operating system. Most people are used to interacting with a graphic user interface (GUI), where you can use a combination of your mouse and keyboard to carry out commands on your computer. 
 
-We can use the shell through a **terminal** program. From the terminal. We can open programs, run analyses, create documents, delete files and create folders. 
+We can use the shell through a **terminal** program. From the terminal, we can open programs, run analyses, create documents, delete files and create folders. 
 
-For this remote workshop, we will be using a custom created create custom computing environment using [Binder](https://mybinder.org/). Click the **launch binder** button below, wait for it to launch, then open a new terminal window by clicking **Terminal**. Type `PS1='$ '` in the terminal.
+For this remote workshop, we will be using a custom created computing environment using [Binder](https://mybinder.org/). Click the **launch binder** button below, wait for it to launch, then open a new terminal window by clicking **Terminal**. Type `PS1='$ '` in the terminal.
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nih-cfde/training-rstudio-binder/data?urlpath=rstudio)
 
@@ -60,9 +60,10 @@ When you open up the terminal in Binder, you may see a line of text or a **promp
 #### Key points about the UNIX shell and terminal
 
 * A shell is a program that reads commands and runs programs.
-* We are using a remote terminal provided by myBinder.org  [![Binder](https://mybinder.org/badge_logo.svg )](https://mybinder.org/v2/gh/nih-cfde/training-rstudio-binder/data?urlpath=rstudio)
+* We are using a remote terminal provided by mybinder.org
 :::
 
+[![Binder](https://mybinder.org/badge_logo.svg )](https://mybinder.org/v2/gh/nih-cfde/training-rstudio-binder/data?urlpath=rstudio)
 
  
 ---
@@ -77,7 +78,7 @@ We should note that _folders_ are called **directories** at the command line. Fo
 
 This Binder comes preloaded with data provided by your instructors.  _If you want to do these exercises locally, on your own computer, you can [download the data here](https://s3.us-west-1.amazonaws.com/dib-training.ucdavis.edu/shell-data2.zip)._
 
-For today's lesson, we will focus on three different sets of data. `books` contains ebooks such as A Tale of Two Cities and The Wizard of Oz.`southpark` contains a compressed csv file containing all the lines spoken by each character across 14 seasons. `seattle` contains data from the Open Seattle Data Portal, including a csv file with names of pets.  The `MiSeq` directory contains FASTQ and FASTA files that are commonly used in next-generation sequencing experiments. These data are useful for practicing commonly used UNIX commands to explore genome-scale data. 
+For today's lesson, we will focus on four different sets of data. `books` contains ebooks such as A Tale of Two Cities and The Wizard of Oz.`southpark` contains a compressed csv file containing all the lines spoken by each character across 14 seasons. `seattle` contains data from the Open Seattle Data Portal, including a csv file with names of pets.  The `MiSeq` directory contains FASTQ and FASTA files that are commonly used in next-generation sequencing experiments. These data are useful for practicing commonly used UNIX commands to explore genome-scale data. 
 
 
 The commands `pwd` and `ls` are two simple commands that can be used to answer the two commonly asked questions "where am I?" and "what files are here?". We will use these frequently through the next sections.
@@ -144,7 +145,7 @@ You can use multiple flags or options at the same time to modify the behavior of
 1. The -F flag will class the file types by appending an identifier. This works best if there are directories present. 
 :::
 
-Now we have seen how to list around our computers and what is located in the directory we are. But some of the beauty of the shell is that we can execute activities in locations that we are not currently in. To do this we can either use an absolute path or a relative path. A **relative path** is the path to another directory from the one you are currently in. 
+Now we have seen how to list the contents of folders on our computers and what is located in the directory we are presently in. But some of the beauty of the shell is that we can perform activities in locations that we are not currently in. To do this we can either use an absolute path or a relative path. A **relative path** is the path to another directory from the one you are currently in. 
 
 
 To move from one directory to the other, we use the `cd` command to **change directories**. 
@@ -272,17 +273,18 @@ ls -lh *fastq
 :::
 
 
-## 3. Reading with `head`, `cat`, and `less`
+## 3. Reading files with `head`, `tail`, `cat`, and `less`
 
 Now that we know what files exist on our computer, it's time to look at the contents of the file. There are multiple ways to look at the contents of a file. 
 
-The `cat` command prints the entirety of a file to the stdout of our computer. We can scroll through files using the `less` command. Less is a safe way of looking at the contents of a file without the ability to change it. `head` prints, by default the first 10 lines of a file.
+The `cat` command prints the entirety of a file to the stdout of our computer. We can scroll through files using the `less` command. Less is a safe way of looking at the contents of a file without the ability to change it. `head` prints, by default the first 10 lines of a file, and `tail` prints the last 10 lines of a file.
 
 
-All three of the commands use the same syntax:
+All four of the commands use the same syntax:
 
 ```
 head [filename]
+tail [filename]
 cat [filename]
 less [filename]
 ```
@@ -301,7 +303,7 @@ cd ~/books/
 head README.md
 ```
 
-You should see an output that looks like this. The `README.md` and `License.md` files are written in [Markdown](https://en.wikipedia.org/wiki/Markdown). To learn more about Markdown syntax, read this excellent [Markdown guide](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
+You should see an output that looks like this. The `README.md` and `License.md` files are written in [Markdown](https://en.wikipedia.org/wiki/Markdown). (To learn more about Markdown syntax, read this excellent [Markdown guide](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).)
 
 ```
 # Tale of Two Cities
@@ -311,8 +313,7 @@ downloaded from [Project Gutenberg](https://www.gutenberg.org/ebooks/98)
 ```
 
 
-Now we can view the file with `head`, `cat`, or `less` and `tail`. 
-
+Now we can view the file with `head`, `cat`, `less` and `tail`.
 ```
 head book.txt
 tail book.txt
@@ -327,7 +328,7 @@ We can see there are a lot more books, and we can look at the first few lines of
 head *.txt
 ```
 
-Notice, there is one book that is compressed. We can uncompress it with the command `gunzip`.
+Notice that there is one book that is compressed. We can uncompress it with the command `gunzip`.
 
 ```
 gunzip TheWonderfulWizardofOz.txt.gz
@@ -340,13 +341,13 @@ gunzip TheWonderfulWizardofOz.txt.gz
 | -------- | -------- | 
 |`head [filename]` | print first 10 lines of  `FILENAME` | 
 |`cat [filename]`| print `FILENAME`'s contents to stdout|
-|`less [filename]`|view `FILENAME` without printing  to stdout |
-| gunzip -k [filename] | uncompress a file and keep the original|
-| gzip [filename] | compress a file |
+|`less [filename]`| view `FILENAME` without printing  to stdout |
+| `gunzip [filename]` | uncompress filename
+| `gzip [filename]` | compress a file |
 :::
 
 
-## 4. Working with files and directories using `cp`, gunzip, `mv`, `mkdir` 
+## 4. Working with files and directories using `cp`, `gunzip`, `mv`, `mkdir` 
 
 We are quite used to copying and moving files using a GUI. These functions can be also carried out at the command line.
 
@@ -382,7 +383,7 @@ head get_books.sh
 
 :::warning
 
-### Challenge: Creating and deleting hierarchy of directories
+### Challenge: Creating and deleting a hierarchy of directories
 
 Now you know how to copy and move files, but you may encounter errors if you try to move files to a directory that doesn't exist. But, have no fear, we can create new directories at the command line with the command `mkdir` followed by the path to the directories you want to create. 
 
@@ -506,7 +507,7 @@ TACGGAGGATGCGAGCGTTATCCGGATTTATTGGGTTTAAAGGGTGCGTAGGCGGCCTGCCAAGTCAGCGGTAAAATTGC
 3AA?ABBDBFFBEGGEGGGGAFFGGGGGHHHCGGGGGGHFGHGGCFDEFGGGHGGGEGF1GGFGHHHHHGGEGGHHHHHFGGGGGGHHHHHGGGGCDDGHHGGGFHHHHHHHHCD@CCHGGGGHEHGGG@GFGGGGGGG@BGGGEGCEBFFFBFFB;9@EFFFEFFFFFFFFFFFFAFBBBFFFFFBBBFFFFBBBFFFFFFFFFFFBBBBBBBFFFFFFFFFDDFAFFFFF.AF9/FBBBBB.EAFFE?F
 ```
 
-`head` prints the first ten lines of a file out onto your screen. Similarly, the `tail` command prints the last 10 lines of a file. 
+You can also try out `head`, which as you may recall prints the first ten lines of a file out onto your screen. Similarly, the `tail` command prints the last 10 lines of a file. 
 
 ```
 tail -4 F3D0_S188_L001_R1_001.fastq
@@ -555,6 +556,7 @@ TGGGGAATATTGCACAATGGGCGAAAGCCTGATGCAGCGACGCCGCGTGAGGGATGGAGGCCTTCGGGTTGTAAACCTCT
 
 FASTQ and FASTA files are often used in combination to map reads to a genome or transcriptome. You've seen three ways to read large files. Next, we will learn how to use and manipulate the files.  
 
+### Using `ls` and `find` to find files
 
 Sometimes you know a file or directory exists, but you can't find it. Sometimes you want to find many files with similar properties. This is where the wildcard (`*`) comes in handy.  What do the following commands do?
 
@@ -586,6 +588,7 @@ grep CATTAG F3D0_S188_L001_R2_001.fastq
 grep CATTAG *.fastq
 ```
 
+<!-- @CTB we need to include some 'find' commands in here! -->
 
 :::warning
 #### CHALLENGE: grep
@@ -613,13 +616,10 @@ wc -l F3D0_S188_L001_R2_001.fastq
 #### Key Points:
 |Command|Description|
 |-|-
-|`find [filename]` | finds files with specific properties that match patterns|
+|`find [path] [conditions]` | finds files with specific properties that match patterns|
 | `grep [option] [filename]`  | selects lines in files that match patterns|
 | `wc` [filename] | will print the total characters, words, and lines in a file.
 :::
-
-
-
 
 
 ## 6. Redirection, appending, and piping with `>`, `>>`, and `|`
@@ -768,7 +768,7 @@ history
 You can save the file in your home directory with: 
 
 ```
-history > ~/history-2022-jan-12.txt
+history > ~/history-today.txt
 ```
 
 
@@ -777,7 +777,9 @@ future, so please feel free to come back and revisit some of these commands!
 
 Google (and especially stackoverflow) is your friend! Use Internet
 search whenever you have questions about what a command does, or what
-commands to use to achieve a particular task. The website [Explain Shell](https://explainshell.com/) is great for defining what each command and flag does.
+commands to use to achieve a particular task.
+
+The website [Explain Shell](https://explainshell.com/) is great for defining what each command and flag does.
 
 
 
