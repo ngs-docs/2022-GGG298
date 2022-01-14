@@ -4,6 +4,9 @@ tags: ggg, ggg2022, ggg298
 
 # An Introduction to UNIX for Remote Computing - GGG 298 lab 2 - January 12, 2022
 
+[![hackmd-github-sync-badge](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ/badge)](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ)
+
+
 
 **Computing environment:** [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nih-cfde/training-rstudio-binder/data?urlpath=rstudio)
 
