@@ -5,6 +5,9 @@ tags: ggg, ggg2022, ggg298
 
 # Syllabus for GGG 298: Tools to support data-intensive research (Winter 2021/2022)
 
+[![hackmd-github-sync-badge](https://hackmd.io/PpgYFrY3SMuGsDsB6VMoMw/badge)](https://hackmd.io/PpgYFrY3SMuGsDsB6VMoMw)
+
+
 UC Davis
 
 [toc]
