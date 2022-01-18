@@ -1,6 +1,11 @@
 # Installing software on remote computers with conda
 
-This two hour workshop will show attendees how to install and manage
+<!-- this is github.com/2022-GGG298/lab-3-conda/index.md -->
+
+[![hackmd-github-sync-badge](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA/badge)](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA)
+
+
+This two hour lab will show students how to install and manage
 software using the conda installation system. We will give examples of
 installing Python and R software, and managing conda environments on
 remote systems.
@@ -20,6 +25,8 @@ Other references:
 * [Why you need Python Environments and How to Manage Them with Conda](https://www.freecodecamp.org/news/why-you-need-python-environments-and-how-to-manage-them-with-conda-85f155f4353c/)
 
 ## Why is software installation hard?
+
+There are many reasons!
 
 It's a confusing ecosystem of operating systems (Mac OS X, many versions of Linux, Windows)
 
@@ -72,6 +79,8 @@ software sources correctly.
 
 ### Log into farm
 
+@@
+
 As per the instructions in [workshop
 3](connecting-to-remote-computers-with-ssh.html) and [workshop
 4](running-programs-on-remote-computers-and-retrieving-the-results.html),
@@ -103,6 +112,8 @@ environments are not affected. You can easily `activate` new
 environments, which is how you switch between them.
 
 ### Installation!
+
+@@
 
 Let's install some software! We'll start with csvtk, which we introduced in [workshop 2, working with text files](creating-and-modifying-text-files-on-remote-computers.html#use-csvtk-when-working-with-csv-files-maybe.).
 
@@ -170,6 +181,7 @@ csvtk cut -f Character All-seasons.csv | sort | uniq -c | sort -n | tail
 ```
 (which tells me that Cartman is by far the most quoted character in this file).
 
+@@
 What I'm doing here is using [piping and filtering (from workshop 2)](creating-and-modifying-text-files-on-remote-computers.html#piping-and-filtering) to:
 
 * take the contents of the Character column, produced by csvtk
@@ -244,8 +256,7 @@ conda install -y fastqc
 and that should work too! You'll be able to run the `fastqc` command now.
 
 Here, FastQC is a completely separate application that we use in
-bioinformatics for looking at FASTQ files. We talk about that more in
-some other workshops we run, but: the main point is that it's just
+bioinformatics for looking at FASTQ files. We talk about that more elsewhere but: the main point is that it's just
 some more "non-standard" software that you can install!
 
 Generally you want to avoid installing too many packages in one
@@ -309,6 +320,7 @@ What if you want to specify collections of software that you use together?
 And/or send collaborators or colleagues the set of software they need,
 all in one nice file?
 
+@@
 conda has a nice human-readable format for that, called an
 **'environment file'**. These are supposed to be reasonably portable
 files that you can ship around to different computers and have them
@@ -406,6 +418,7 @@ So I usually have a default environment that I work in, and when I use
 non-standard software (stuff I use infrequently or for specific tasks)
 I create software-specific environments to work in.
 
+@@
 snakemake (which we'll be talking about [in workshop
 9](automating-your-analyses-with-the-snakemake-workflow-system.html))
 helps with this by letting you use analysis-specific environments.
