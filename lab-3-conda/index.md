@@ -6,6 +6,7 @@
 
 [(Permanent link on github)](https://github.com/ngs-docs/2022-GGG298/blob/main/lab-3-conda/index.md)
 
+
 ---
 
 This two hour lab will show students how to install and manage
@@ -22,10 +23,17 @@ Learning objectives:
 * learn about conda-forge and bioconda and how to install software from them
 * learn to use conda to manage R and Python installations
 
-Other references: @@
+Other references:
 
+* [Remote Computing (August 2021) version of the conda lesson](https://ngs-docs.github.io/2021-august-remote-computing/installing-software-on-remote-computers-with-conda.html)
 * [ANGUS 2019 lesson](https://angus.readthedocs.io/en/2019/conda_tutorial.html)
 * [Why you need Python Environments and How to Manage Them with Conda](https://www.freecodecamp.org/news/why-you-need-python-environments-and-how-to-manage-them-with-conda-85f155f4353c/)
+
+----
+
+Outline:
+
+[toc]
 
 ## Why is software installation hard?
 
@@ -120,9 +128,7 @@ environments, which is how you switch between them.
 
 ### Installation!
 
-@@
-
-Let's install some software! We'll start with csvtk, a tool to work with text files (see [remote computing workshop 2, working with text files](https://ngs-docs.github.io/2021-august-remote-computing/creating-and-modifying-text-files-on-remote-computers.html#use-csvtk-when-working-with-csv-files-maybe.).
+Let's install some software! We'll start with csvtk, a tool to work with text files (see [remote computing workshop 2, working with text files](https://ngs-docs.github.io/2021-august-remote-computing/creating-and-modifying-text-files-on-remote-computers.html#use-csvtk-when-working-with-csv-files-maybe.)).
 
 Here's the command to `create` a new conda environment, named 'csv', with csvtk installed.
 
@@ -190,7 +196,6 @@ csvtk cut -f Character All-seasons.csv | sort | uniq -c | sort -n | tail
 ```
 (which tells me that Cartman is by far the most quoted character in this file).
 
-@@
 What I'm doing here is using piping and filtering (from our previous lab) to:
 
 * take the contents of the Character column, produced by csvtk
@@ -454,7 +459,7 @@ To search for all available versions of a particular package from the
 command line, do:
 
 ```
-conda search <software>
+mamba search <software>
 ```
 
 ## Using the 'bioconda' and 'conda-forge' channels
@@ -468,15 +473,15 @@ packages as well as many Python and R libraries, while bioconda is more
 focused on biology/bioinformatics tools specifically.
 
 You can install stuff directly from these channels by specifying the
-bioconda channel explicitly: `conda install -c bioconda ...`. Or, you
+bioconda channel explicitly: `mamba install -c bioconda ...`. Or, you
 can add it to your "default" set of channels to search, as we did
 above:
 
 (You don't need to run these, but you can:)
 ```
-conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
+mamba config --add channels defaults
+mamba config --add channels bioconda
+mamba config --add channels conda-forge
 ```
 
 this sets up your .condarc file -- take a look,
@@ -561,11 +566,20 @@ Now, try `type R` to see where R is installed - under your own account. Yay!
 If you want, you can run `R` and then `library(rmarkdown)` to verify that
 it's installed.
 
-I've found that the majority of R packages I use in bioinformatics are readily
-available via conda-forge, which is nice. Again, your mileage may vary...
+You can also install your own R packages with `install.packages` - and, as long as you're running R from within your conda environment, it will install into that version of R.
 
+You can manage R packages either way - with conda, or "manually" using R's internal mechanisms. It's often faster to use conda, especially if there are C extension packages, and  I've found that the majority of R packages I use in bioinformatics are readily
+available via conda-forge, which is nice. Again, your mileage may vary... regardless, at least now you have options!
+
+::::warning
 **CHALLENGE:** What would be the command to install the dplyr library for
 R in either the existing rmd environment, or in a new environment? (You can run it if you like, but it might take a few minutes.)
+::::spoiler
+Try:
+```
+mamba install -n dplyr -y r-dplyr
+```
+::::
 
 ### Conda and Python
 
@@ -608,22 +622,19 @@ us a note at datalab-training@ucdavis.edu if you're interested.
 
 ### It can take a long time to install lots of software
 
-This is because conda needs to make sure to resolve version incompatibilities before proceeding.
+This is because conda needs to make sure to resolve version incompatibilities before proceeding, and for large conda environments containing many packages, this can take a while!
+
+This has mostly been resolved by the mamba command, which is much faster than conda.
 
 Solution: use isolated environments to install single packages, instead.
-
-Another solution: use the mamba command, a drop-in replacement for
-conda. All of the commands above will work with `mamba` instead of
-`conda`, except only `conda activate` which _must_ be done using
-`conda`.
 
 ### Explicit package listing
 
 You can grab an explicit list of version pinned software that is OS specific like so -
 ```
-conda list --explicit > package-files.txt
-conda create --name myenv --file spec-file.txt
-conda install --name myenv --file spec-file.txt
+mamba list --explicit > package-files.txt
+mamba create --name myenv --file spec-file.txt
+mamba install --name myenv --file spec-file.txt
 ```
 this will guarantee _identical_ environments.
 
