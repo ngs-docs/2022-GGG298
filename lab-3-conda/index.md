@@ -4,6 +4,10 @@
 
 [![hackmd-github-sync-badge](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA/badge)](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA)
 
+[(Permanent link on github)](https://github.com/ngs-docs/2022-GGG298/blob/main/lab-3-conda/index.md)
+
+
+---
 
 This two hour lab will show students how to install and manage
 software using the conda installation system. We will give examples of
@@ -21,8 +25,15 @@ Learning objectives:
 
 Other references:
 
+* [Remote Computing (August 2021) version of the conda lesson](https://ngs-docs.github.io/2021-august-remote-computing/installing-software-on-remote-computers-with-conda.html)
 * [ANGUS 2019 lesson](https://angus.readthedocs.io/en/2019/conda_tutorial.html)
 * [Why you need Python Environments and How to Manage Them with Conda](https://www.freecodecamp.org/news/why-you-need-python-environments-and-how-to-manage-them-with-conda-85f155f4353c/)
+
+----
+
+Outline:
+
+[toc]
 
 ## Why is software installation hard?
 
@@ -77,13 +88,17 @@ and we'll talk about this later. But if you install miniconda on your own,
 you'll need to run these commands in your new installation to set up the
 software sources correctly.
 
+### conda vs mamba
+
+You can use either `conda` or `mamba` to manage environments. They are, with almost no expections, identical in _behavior_.
+
+Below, we'll be using the `mamba` command because it's always faster than conda.
+
+The only exception is that you must run `conda activate` to activate environments.
+
 ### Log into farm
 
-@@
-
-As per the instructions in [workshop
-3](connecting-to-remote-computers-with-ssh.html) and [workshop
-4](running-programs-on-remote-computers-and-retrieving-the-results.html),
+As per the instructions you received in e-mail,
 log into farm.cse.ucdavis.edu using your datalab-XX account.
 
 When you log in, your prompt should look like this:
@@ -94,8 +109,8 @@ When you log in, your prompt should look like this:
 
 If it doesn't, please alert a TA and we will help you out!
 
-The 'base' part of the prompt is new and it indicates that conda has
-been activated in your account and that you are in the base
+The 'base' part of the prompt indicates that conda has
+been activated in your account and that you are in the default (base)
 environment. Read on!
 
 ### Creating your first environment & installing csvtk!
@@ -113,14 +128,12 @@ environments, which is how you switch between them.
 
 ### Installation!
 
-@@
-
-Let's install some software! We'll start with csvtk, which we introduced in [workshop 2, working with text files](creating-and-modifying-text-files-on-remote-computers.html#use-csvtk-when-working-with-csv-files-maybe.).
+Let's install some software! We'll start with csvtk, a tool to work with text files (see [remote computing workshop 2, working with text files](https://ngs-docs.github.io/2021-august-remote-computing/creating-and-modifying-text-files-on-remote-computers.html#use-csvtk-when-working-with-csv-files-maybe.)).
 
 Here's the command to `create` a new conda environment, named 'csv', with csvtk installed.
 
 ```
-conda create --name csv -y csvtk
+mamba create --name csv -y csvtk
 ```
 
 Here, we are installing the csvtk package into an environment named `csv`.
@@ -135,17 +148,19 @@ conda activate csv
 
 Your prompt should change to have `(csv)` at the beginning.
 
-Let's run csvtk on some real data now! We'll use the files from workshop 2
-(see [these instructions for getting them](running-programs-on-remote-computers-and-retrieving-the-results.html#first-download-some-files)) -- make sure
-this works:
+Let's run csvtk on some real data now! To download the data, run:
+```
+cd ~/
+git clone https://github.com/ngs-docs/2021-remote-computing-binder/
+```
+(per [this workshop](https://ngs-docs.github.io/2021-august-remote-computing/running-programs-on-remote-computers-and-retrieving-the-results.html#first-download-some-files)).
 
+Now uncompress one of the downloaded files:
 ```
 cd ~/2021-remote-computing-binder/SouthParkData
-gunzip All-seasons.csv.gz
+gunzip -k All-seasons.csv.gz
 ls -l All-seasons.csv
 ```
-(FYI, you may get an error in the gunzip command if you've already run that -
-it's fine!)
 
 You should now be able to run:
 ```
@@ -181,8 +196,7 @@ csvtk cut -f Character All-seasons.csv | sort | uniq -c | sort -n | tail
 ```
 (which tells me that Cartman is by far the most quoted character in this file).
 
-@@
-What I'm doing here is using [piping and filtering (from workshop 2)](creating-and-modifying-text-files-on-remote-computers.html#piping-and-filtering) to:
+What I'm doing here is using piping and filtering (from our previous lab) to:
 
 * take the contents of the Character column, produced by csvtk
 * sorting the contents (`sort`)
@@ -193,7 +207,18 @@ What I'm doing here is using [piping and filtering (from workshop 2)](creating-a
 (It looks complicated, but as you start using these commands more and more,
 it will become second nature!)
 
+::::warning
 **CHALLENGE:** How would I find the _least_ quoted characters in this file?
+::::spoiler
+You could use either
+```
+csvtk cut -f Character All-seasons.csv | sort | uniq -c | sort -rn | tail
+```
+or
+```
+csvtk cut -f Character All-seasons.csv | sort | uniq -c | sort -n | head
+```
+::::
 
 ---
 
@@ -248,10 +273,10 @@ everyone, on every platform. As they say, "your mileage may vary"
 
 ## Installing more software in your current environment
 
-Once you're in an environment, you can install new software with `conda install -y <software_name>` like so:
+Once you're in an environment, you can install new software **into that environment** with `conda install -y <software_name>` like so:
 
 ```
-conda install -y fastqc
+mamba install -y fastqc
 ```
 and that should work too! You'll be able to run the `fastqc` command now.
 
@@ -263,9 +288,9 @@ Generally you want to avoid installing too many packages in one
 environment, as it starts to get slow to figure out whether or not
 something can be installed. We'll talk more about this below.
 
-You can list software with `conda list`:
+You can list software with `mamba list`:
 ```
-conda list
+mamba list
 ```
 
 which is less useful than you might think, given how many packages
@@ -281,13 +306,13 @@ software, too!)
 
 To see what version of a particular piece of software you have installed, run:
 ```
-conda list csvtk
+mamba list csvtk
 ```
-and look at the second column. (Note that `conda list` doesn't need an exact match, so e.g. you can find all packages with 'csv' in the name by doing `conda list csv`).
+and look at the second column. (Note that `mamba list` doesn't need an exact match, so e.g. you can find all packages with 'csv' in the name by doing `mamba list csv`).
 
 As of Aug 2021, conda installs csvtk version 0.23.0. You can force conda to install _exactly_ this version in the future like so,
 ```
-conda install csvtk==0.23.0
+mamba install csvtk==0.23.0
 ```
 
 Unfortunately there's no good way to know if a new version of a
@@ -303,10 +328,18 @@ implementation). The next version, sourmash 4.0, broke things.
 (The lesson is, don't trust software projects to be consistent in
 their versioning!)
 
-**CHALLENGE:** Use the `conda create` command to create a new environment
+::::warning
+**CHALLENGE:** Use the `mamba create` command to create a new environment
 and install the latest version of sourmash in it. Then activate that
 environment and verify that you can run 'sourmash'.
-
+::::spoiler
+Try:
+```
+mamba create --name smash -y sourmash
+conda activate sourmash
+sourmash
+```
+::::
 ---
 
 Make sure to switch back to your csv environment when you're all done:
@@ -320,13 +353,12 @@ What if you want to specify collections of software that you use together?
 And/or send collaborators or colleagues the set of software they need,
 all in one nice file?
 
-@@
 conda has a nice human-readable format for that, called an
 **'environment file'**. These are supposed to be reasonably portable
 files that you can ship around to different computers and have them
 automatically install the right stuff. You can see the one for the
-binder for workshops 1 and 2
-[here](https://github.com/ngs-docs/2021-remote-computing-binder/blob/latest/binder/environment.yml),
+binder for the remote computing workshops
+[here](https://github.com/ngs-docs/2021-remote-computing-binder/blob/latest/binder/environment.yml), and the one for the RNAseq pipeline [here](https://github.com/ngs-docs/2020-ggg-201b-rnaseq/blob/latest/binder/environment.yml),
 for example.
 
 (These are [YAML files](https://en.wikipedia.org/wiki/YAML), which are
@@ -337,7 +369,7 @@ configuration files for bioinformatics software, too.)
 If you have a complicated environment that you want to save, you can make an environment file from your current environment like so:
 
 ```
-conda env export > export.yml
+mamba env export > export.yml
 ```
 
 To look at the environment files we've just created, do:
@@ -347,14 +379,14 @@ cat export.yml
 
 and you can create a new environment from this file like so:
 ```
-conda env create -n csv2 -f export.yml
+mamba env create -n csv2 -f export.yml
 ```
-This would create a new environment called `csv2` that has all the same things installed in it as `csv` does (because that's where we ran `conda env export`!)
+This would create a new environment called `csv2` that has all the same things installed in it as `csv` does (because that's where we ran `mamba env export`!)
 
 ### Updating, removing, etc software
 
-You can update software with `conda update`, and remove software with
-`conda remove`. Generally there's not too much need for these commands
+You can update software with `mamba update`, and remove software with
+`mamba remove`. Generally there's not too much need for these commands
 tho, as we recommend just creating new environments with a pinned
 version, OR the latest version. Then, when you want to update your software,
 you create a new, clean environment.
@@ -369,15 +401,15 @@ The default is `base`. Other environments will have their own set of
 packages. Environments do not include packages from other environments;
 you'll need to install each package in every environment that needs it.
 
-You can list environments with `conda env list`:
+You can list environments with `mamba env list`:
 
 ```
-conda env list
+mamba env list
 ```
 
 It will list all of the available environments as well as denote the environment you are currently in with an \*.
 
-Switch environments with `conda activate <environment_name>`, and remove environments with `conda env remove -n <environment_name>`.
+Switch environments with `conda activate <environment_name>`, and remove environments with `mamba env remove -n <environment_name>`.
 
 Note that switching environments *doesn't switch your directory*, it just switches *the software you're running.*. Whoa...
 
@@ -418,9 +450,7 @@ So I usually have a default environment that I work in, and when I use
 non-standard software (stuff I use infrequently or for specific tasks)
 I create software-specific environments to work in.
 
-@@
-snakemake (which we'll be talking about [in workshop
-9](automating-your-analyses-with-the-snakemake-workflow-system.html))
+snakemake (which we'll be talking about in more detail soon)
 helps with this by letting you use analysis-specific environments.
 
 ### Finding packages within conda
@@ -429,7 +459,7 @@ To search for all available versions of a particular package from the
 command line, do:
 
 ```
-conda search <software>
+mamba search <software>
 ```
 
 ## Using the 'bioconda' and 'conda-forge' channels
@@ -443,15 +473,15 @@ packages as well as many Python and R libraries, while bioconda is more
 focused on biology/bioinformatics tools specifically.
 
 You can install stuff directly from these channels by specifying the
-bioconda channel explicitly: `conda install -c bioconda ...`. Or, you
+bioconda channel explicitly: `mamba install -c bioconda ...`. Or, you
 can add it to your "default" set of channels to search, as we did
 above:
 
 (You don't need to run these, but you can:)
 ```
-conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
+mamba config --add channels defaults
+mamba config --add channels bioconda
+mamba config --add channels conda-forge
 ```
 
 this sets up your .condarc file -- take a look,
@@ -536,11 +566,20 @@ Now, try `type R` to see where R is installed - under your own account. Yay!
 If you want, you can run `R` and then `library(rmarkdown)` to verify that
 it's installed.
 
-I've found that the majority of R packages I use in bioinformatics are readily
-available via conda-forge, which is nice. Again, your mileage may vary...
+You can also install your own R packages with `install.packages` - and, as long as you're running R from within your conda environment, it will install into that version of R.
 
+You can manage R packages either way - with conda, or "manually" using R's internal mechanisms. It's often faster to use conda, especially if there are C extension packages, and  I've found that the majority of R packages I use in bioinformatics are readily
+available via conda-forge, which is nice. Again, your mileage may vary... regardless, at least now you have options!
+
+::::warning
 **CHALLENGE:** What would be the command to install the dplyr library for
 R in either the existing rmd environment, or in a new environment? (You can run it if you like, but it might take a few minutes.)
+::::spoiler
+Try:
+```
+mamba install -n dplyr -y r-dplyr
+```
+::::
 
 ### Conda and Python
 
@@ -583,22 +622,19 @@ us a note at datalab-training@ucdavis.edu if you're interested.
 
 ### It can take a long time to install lots of software
 
-This is because conda needs to make sure to resolve version incompatibilities before proceeding.
+This is because conda needs to make sure to resolve version incompatibilities before proceeding, and for large conda environments containing many packages, this can take a while!
+
+This has mostly been resolved by the mamba command, which is much faster than conda.
 
 Solution: use isolated environments to install single packages, instead.
-
-Another solution: use the mamba command, a drop-in replacement for
-conda. All of the commands above will work with `mamba` instead of
-`conda`, except only `conda activate` which _must_ be done using
-`conda`.
 
 ### Explicit package listing
 
 You can grab an explicit list of version pinned software that is OS specific like so -
 ```
-conda list --explicit > package-files.txt
-conda create --name myenv --file spec-file.txt
-conda install --name myenv --file spec-file.txt
+mamba list --explicit > package-files.txt
+mamba create --name myenv --file spec-file.txt
+mamba install --name myenv --file spec-file.txt
 ```
 this will guarantee _identical_ environments.
 
