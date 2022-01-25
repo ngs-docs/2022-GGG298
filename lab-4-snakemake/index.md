@@ -1,5 +1,8 @@
 # Automating your analyses with the snakemake workflow system
 
+[![hackmd-github-sync-badge](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw/badge)](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw)
+
+
 This ~2.5 hour workshop will introduce you to the snakemake
 workflow system, for executing large-scale automated analyses.
 
