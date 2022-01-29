@@ -1,4 +1,7 @@
-# Automating your analyses with the snakemake workflow system - GGG 298 winter 2022
+---
+tags: ggg298, ggg2022, ggg
+---
+# Automating your analyses with the snakemake workflow system - GGG 298 winter 2022, week 4
 
 [![hackmd-github-sync-badge](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw/badge)](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw)
 
