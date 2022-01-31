@@ -1,6 +1,9 @@
 ---
-tags: ggg, ggg2021,ggg298
+tags: ggg, ggg2022,ggg298
 ---
+
+[![hackmd-github-sync-badge](https://hackmd.io/qvTaFZjpRTqLkjMxKHBqqw/badge)](https://hackmd.io/qvTaFZjpRTqLkjMxKHBqqw)
+
 [toc]
 
 # GGG 298, March 2021 - Week 6, integrating all the things
