@@ -1,14 +1,27 @@
-# Automating your analyses with the snakemake workflow system
+---
+tags: ggg298, ggg2022, ggg
+---
+# Automating your analyses with the snakemake workflow system - GGG 298 winter 2022, week 4
 
-This ~2.5 hour workshop will introduce you to the snakemake
+[![hackmd-github-sync-badge](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw/badge)](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw)
+
+([Permanent link](https://github.com/ngs-docs/2022-GGG298/blob/main/lab-4-snakemake/index.md))
+
+Today, I'll introduce you to the snakemake
 workflow system, for executing large-scale automated analyses.
 
-By the end of this lecture, we will:
+By the end of today, we will:
 
 - know how to make basic workflows in snakemake 
 - understand variable substitution in snakemake rules
 - understand wildcard matching in snakemake rules
 - be introduced to reasons why workflow systems can help you do your computing more easily
+
+----
+
+Contents:
+
+[toc]
 
 ## What is a workflow and why use one?
 
@@ -18,7 +31,7 @@ Workflows are ubiquitous!
 
 Making pizza is a workflow!
 
-![](snakemake-pizza.png)
+![pizza as a workflow](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-4-snakemake/snakemake-pizza.png)
 
 Many things in bioinformatics are workflows. 
  
@@ -46,10 +59,9 @@ The name 'snakemake' comes from the fact that it's written in (and can be extend
 - Each rule is defined as a step in the workflow. 
 - Snakemake uses the rules and command line options to figure out how the rules relate to each other so it can manage the workflow steps.
 
-
 ## Getting started - logging into farm!
 
-As per the instructions in [workshop 3](https://ngs-docs.github.io/2021-august-remote-computing/connecting-to-remote-computers-with-ssh.html) and [workshop 4](https://ngs-docs.github.io/2021-august-remote-computing/running-programs-on-remote-computers-and-retrieving-the-results.html), log into farm.cse.ucdavis.edu using your datalab-XX account.
+Log into farm.cse.ucdavis.edu using your datalab-XX account.
 
 When you log in, your prompt should look like this:
 
@@ -58,20 +70,20 @@ When you log in, your prompt should look like this:
 >(base) datalab-01@farm:~$
 >~~~
 
-If it doesn’t, please alert a TA and we will help you out!
+If it doesn’t, please alert me!
 
 ## Installing snakemake
 
-We will use conda to install snakemake-minimal. You have conda pre-installed from workshop 4.
+We will use conda to install snakemake-minimal. (You should have conda pre-installed.)
 
 We will install snakemake inside a conda environment called "snakemake"
 
 ```
-conda create -y --name snakemake snakemake-minimal
+mamba create -y --name snakemake snakemake-minimal
 ```
 
 
-This command makes a new environment called "snakemake" and installs snakemake in it! Here, `snakemake-minimal` is just the stuff needed to run snakemake, without some extra bells and whistles.
+This command makes a new environment called "snakemake" and installs snakemake in it! Here, `snakemake-minimal` is just the stuff needed to run snakemake, without (a lot of optional) extra bells and whistles.
 
 Activate the environment with this command:
 
@@ -84,13 +96,13 @@ Check the version of snakemake with
 snakemake --version
 ```
 
-As of August 2021, the snakemake version is 6.7.0; yours should be that
-version or later.
+As of January 20, 2022, the snakemake version is 6.13.1; yours should be that
+version (or possibly a later one).
 
-Next, add two bioinformatics software to the snakemake environment: `fastqc` and `salmon`
+Next, add two bioinformatics software packages to the snakemake environment: `fastqc` and `salmon`
 
 ```
-conda install -y fastqc salmon
+mamba install -y fastqc salmon
 ```
 
 These are two packages that we will use for bioinformatics work.
@@ -98,11 +110,11 @@ These are two packages that we will use for bioinformatics work.
 ## More setup
 
 ### Create a working directory
-Create a working directory called snakemake_lesson
+Create a working directory called `GGG98_lab4` and change into it. All of our work today will be confined to this directory (except the conda environment creation)
 
 ```
-mkdir -p ~/snakemake_lesson
-cd ~/snakemake_lesson
+mkdir -p ~/GGG298_lab4
+cd ~/GGG298_lab4
 ```
 
 ### Download some data
@@ -117,11 +129,11 @@ curl -L https://osf.io/nmqe6/download -o ERR458501.fastq.gz
 You should now have four files in your current directory, representing
 four sequencing experiments.
 
-Now we're all set!
+Now we're all set to start running things!
 
 ## RNA-Seq workflow we will automate
 
-![](snakemake-workflow.png)
+![](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-4-snakemake/snakemake-workflow.png)
 
 ## First step: quality control with FASTQC
 
@@ -132,9 +144,9 @@ fastqc ERR458493.fastq.gz
 ```
 This command should produce two output files: `ERR458493_fastqc.html` and `ERR458493_fastqc.zip`
 
-So this is a pretty simple bioinformatics task, but let's use this task as the start of our snakemake workflow!
+So this is a pretty simple bioinformatics task - one command! some output files! - but let's use this task as the start of our snakemake workflow!
 
-Remove output:
+First, let's remove the output:
 
 ```
 rm ERR458493_fastqc.zip
@@ -144,10 +156,18 @@ rm ERR458493_fastqc.html
 
 ### Create a Snakefile
 
+::::warning
+Unfortunately, on farm we do not have easy access to a Web-based editor like we did on the binder, where we could use RStudio. So instead we need to use a command-line editor.
+
+Below, we're going to use the `nano` command-line editor. If you already know how to use a different program, then you can totally use that; just make sure you've set TAB to insert 4 spaces, and not an actual TAB character.
+
+(For more information on editing text files on remote computers, see [this lesson](https://ngs-docs.github.io/2021-august-remote-computing/creating-and-modifying-text-files-on-remote-computers.html).)
+::::
+
 Create a new file and call it "Snakefile"
 
 ```
-nano Snakefile
+nano -ET4 Snakefile
 ```
 
 Copy and paste this text into the Snakefile:
@@ -169,25 +189,31 @@ rule make_fastqc:
 
 ```
 
-Save and close.
+Save and close by typing 'CTRL-X', y, ENTER.
 
 To run the snakefile, type:
 ```
 snakemake -p -j 1
 ```
+and a bunch of stuff should run.
 
-It worked! There is a html file and a zip file.
+If it worked, there is a html file and a zip file! Use `ls` to look at the directory contents --
+```
+ls
+```
 
 Let's explore the logic of what happened:
 
 - Each rule tells Snakemake how to do something.
-- The first rule (in this case called "all") is the rule run by default, so we are asking snakemake to create the two target files `ERR458493_fastqc.html` and `ERR458493_fastqc.zip`.
+- The first rule in the file (in this case called "all") is the rule run by default, so we are asking snakemake to create the two target files `ERR458493_fastqc.html` and `ERR458493_fastqc.zip`.
 - Snakemake first looks at the directory to see if the target files are there. (They're not!)
-- Snakemake then looks at the rest of the rules one at a time (in this case, there's only one!) to see if it can figure out how to make the target files.
-- The make_fastqc rule says, "if this input exists, you can run the provided shell command to make that output". So snakemake complies!
+- Snakemake then looks at the rest of the rules one at a time (in this case, there's only one other rule!) to see if it can figure out how to make the target files.
+- The `make_fastqc` rule says, "if you want this output, and if this input exists, you can run the provided shell command to make that output". So snakemake complies!
 
-**Here, the "input:" in the rule all has to match the "output" in the rule make_fastqc or else Snakefile wouldn't know what to make.**
-
+::::info
+One very important point:
+**Here, the "input:" in the rule `all` has to match the "output" in the rule `make_fastqc` or else Snakefile wouldn't know what to make.**
+::::
 
 Meta-notes:
 
@@ -199,12 +225,17 @@ Meta-notes:
 * These are just shell commands, with a bit of "decoration". You could run them yourself if you wanted!
 * Rule names are arbitrary (letters, numbers, _)
 * You can specify a subset of outputs, e.g. just the .html file, and snakemake will run the rule even if it only needs one of the files.
-* It goes all red if it fails! (try breaking one command :)
+* It goes all red if it fails! (try breaking one command... :)
 * It's all case sensitive.
-* Tabs and spacing matter! You could use the `-ET4` flag in nano to make the editor treat tabs as 4 spaces.
+* Tabs and spacing matter! That is why we use the `-ET4` flag for nano to make the editor treat tabs as 4 spaces.
 * If you see syntax error messages, always check your tabs first. Replacing tabs with spaces could fix the problem!
 * You can make lists for multiple input or output files by separating filenames with a comma.
 
+::::warning
+CTB TODO:
+- [ ] show breaking command
+- [ ] show syntax error/space issue
+::::
 
 ## Some features of workflows
 
@@ -231,7 +262,7 @@ This ability to selectively figure out whether or not to run a command is one of
 
 How can we run a different rule?
 
-Specifying the rule name, tells snakemake to run that specific rule:
+Specifying the rule name tells snakemake to run that specific rule:
 
 ```
 snakemake -p -j 1 make_fastqc
@@ -266,12 +297,13 @@ rule make_fastqc:
 
 It replaces the {input} with whatever is in the "input:" line, above.
 
-
+::::warning
 CHALLENGE: Add a new rule, called make_fastqc2, that runs fastqc on ERR458501.fastq.gz
+::::
 
 Does it run?
 
-Reminder: add the desired output file to the "all" rule as an input, too!
+Reminder: you need to add the desired output file to the "all" rule as an input, too!
 
 ## Wildcards
 You should now have two rules:
@@ -280,7 +312,7 @@ You should now have two rules:
 
 They have the same shell command but they have different inputs and outputs: one has "ERR458493.fastq.gz" as an input, and "ERR458493_fastqc.html" and "ERR458493_fastqc.zip" as outputs, while the other has "ERR458501.fastq.gz" as an input, and "ERR458501_fastqc.html" and "ERR458501_fastqc.zip" as outputs. 
 
-If you line these up, you'll notice something interesting:
+If you line these up, you'll notice something interesting: they look aaaaaalmost identical.
 
 ```
 ERR458493.fastq.gz
@@ -298,8 +330,8 @@ We can make use of this commonality by adding a wild card! We will tell snakemak
 
 Change the make_fastqc rule:
 
-- the input: is "{sample}.fastq.gz"
-- the output is "{sample}_fastqc.html", "{sample}_fastqc.zip"
+- the input: is ``"{sample}.fastq.gz"``
+- the output is ``"{sample}_fastqc.html", "{sample}_fastqc.zip"``
 - **delete the make_fastqc2 rule!**
 
 Your complete Snakefile should look like this:
@@ -330,9 +362,11 @@ rm *.html
 snakemake -p -j 1
 ```
 
-Please note: wildcards operate within a single rule, not across rules.
+Please note: wildcards operate *within* a single rule, not across rules.
 
+::::warning
 CHALLENGE: Update the Snakefile so that it runs fastqc on "ERR458494.fastq.gz" and "ERR458500.fastq.gz" too.
+::::
 
 ## Adding more rules
 
@@ -435,8 +469,10 @@ BUT if you try to run snakemake -p -j 1 then it won't run... we have to specify 
 snakemake -p -j 1 download_reference
 snakemake -p -j 1 index_reference
 ```
-CHALLENGE: Modify the snakefile such that ALL the rules run when you type `snakemake -p -j 1`
 
+::::warning
+CHALLENGE: Modify the snakefile such that ALL the rules run when you type `snakemake -p -j 1`
+::::
 
 ### Running Salmon quant
 
@@ -482,8 +518,9 @@ rule salmon_quant:
 
 Snakemake doesn't automatically look at all the files in the directory and figure out which ones it can apply rules to - you have to ask it more specifically, by asking for the specific files you want.
 
-
+::::warning
 CHALLENGE: make the command snakemake run with no target rules for all four salmon quant commands.
+::::
 
 ### One version of the final Snakefile
 
@@ -538,7 +575,7 @@ rule salmon_quant:
 ```
 
 
-## Titus' version of the final snakefile as created during the workshop
+## Titus' version of the final snakefile as created during the class
 
 ```
 SAMPLES=["ERR458493", "ERR458501", "ERR458494", "ERR458500"]
@@ -588,7 +625,7 @@ rule salmon_quant:
 If you give snakemake a `--dry-run` (-n) parameter, it will tell you what it thinks it should run but won't actually run it. This is useful for situations where you don't know what needs to be run and want to find out without actually running it.
 
 ## Advanced features 
-There are many advanced features to snakemake, and we'll touch on a few of them here.
+There are many advanced features to snakemake, and we'll touch on a few of the most immediately useful ones here.
 
 ### Rule-specific conda environments with conda: and `--use-conda`
 
@@ -596,14 +633,17 @@ If you specify a conda environment file, in a `conda:` block in a rule, and run 
 
 This is useful when you want to version-pin software a specific action, and/or have conflicting software in different rules.
 
-See [Making and using environment files] for more information on conda environment files!
+See [Making and using environment files](https://github.com/ngs-docs/2022-GGG298/blob/main/lab-3-conda/index.md#making-and-using-environment-files) from the conda lesson for more information on conda environment files!
 
 
 ### parallelizing snakemake: -j
-You can tell snakemake to run things in parallel by doing
+You can tell snakemake to run things in parallel by providing `-j` with a number greater than one.
 
+````
 snakemake -j 2
-This will tell snakemake that it can run up to two jobs at a time. (It automatically figures out which jobs can be run at the same time by looking at the workflow graph.)
+````
+
+This will tell snakemake that it can run up to two jobs at a time. (It **automatically** figures out which jobs can be run at the same time by looking at the workflow graph.)
 
 ## Practical advice: How to build your workflow
 
@@ -639,8 +679,10 @@ The [first three 201(b) class materials](https://hackmd.io/wnAlw5Y6QRu4kfWiri9Cw
 a free book! -- [the Snakemake book](https://endrebak.gitbooks.io/the-snakemake-book/chapters/hello_world/hello_world.html)
 
 ANGUS 2019 material -- [Workflow Management using Snakemake](https://angus.readthedocs.io/en/2019/snakemake_for_automation.html)
+
 ### Dealing with complexity
-Workflows can get really complicated; [here](https://github.com/spacegraphcats/2018-paper-spacegraphcats/blob/master/pipeline-base/Snakefile), for example, is one for our most recent paper. But it's all just using the building blocks that I showed you above!
+
+Workflows can get really complicated; [here](https://github.com/spacegraphcats/2018-paper-spacegraphcats/blob/master/pipeline-base/Snakefile), for example, is one for a recent paper. But even though it's long and complicated, it's using the same building blocks that I showed you above!
 
 If you want to see some good examples of how to build nice, clean, simple-looking workflows, check out [this RNAseq example](https://github.com/snakemake-workflows/rna-seq-star-deseq2).
 
