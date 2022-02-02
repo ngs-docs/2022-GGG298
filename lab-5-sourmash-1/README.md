@@ -6,49 +6,39 @@ tags: ggg, ggg2022,ggg298
 
 [toc]
 
-# GGG 298, March 2021 - Week 6, integrating all the things
+# GGG 298, Feb 2022 - Week 5, building a sourmash Snakefile
 
-Feb 10, 2021
-Titus Brown and Shannon Joslin
+Feb 2, 2022
 
 Learning goals:
-* review the previous four lessons by building something that puts them all together!
+* review the previous three lessons by building something that combines them!
 
-## Links!
+Lessons:
+* [Week 2, command line](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ?view)
+* [Week 3, software install with conda](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA?view)
+* [Week 4, workflows with snakemake](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw?view)
 
+## Links and more information!
+
+@@
 scratchpads for breakout rooms -
 
-[solutions etc](https://hackmd.io/grcnwriGQVyMxqc-qrCHIw)
+### Creating and using a working directory
 
-## Rough schedule thoughts
-
-9:30 install software, get basic commands running, 
-(end 10:05)
-10:10  download data; sourmash sketch on each file
-(end 10:35)
-10:45 sourmash compare, sourmash plot
-(end 11:10)
-11:15 default rule; conda environment file
-(end 11:40)
-
-## Where we will run things
-
-start up a binder,
-
-[![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/binder-examples/r-conda/master?urlpath=rstudio)
-
-This should bring up the usual RStudio window.
-
-Next, go to the Terminal window and run:
-
+You probably want to work in a subdirectory. I suggest:
 ```
-conda init
-echo "PS1='\w $ '" >> .bashrc
+mkdir ~/week5-sourmash
+cd ~/week5-sourmash
 ```
 
-which will (1) initialize conda and (2) modify your shell settings to a cleaner prompt.
+### Editing files at the command line with nano
 
-Now close & reopen your terminal, by typing 'exit' and then going to Tools... New Terminal.
+If you're using nano to edit files, remember to use `-ET4` -
+```
+nano -ET4 Snakefile
+```
+
+You can save-and-exist with CTRL-X, y, ENTER.
 
 ## Today's plan!
 
@@ -60,13 +50,25 @@ What we'll do is take ~20-25 minutes for each chunk of work, in breakout rooms. 
 
 Importantly, you absolutely don't have to complete each chunk! I'd like you to try, but having a set of questions and thoughts is perfectly fine!
 
+We'll also do this again in a few weeks (after the labs on git and project organization).
+
+## How we'll work
+
+We're going to start up a bunch of breakout rooms and randomly assign you to the first three. You are welcome to choose your own breakout room if you want to work separately, but I suggest you stay in zoom.
+
+We'll have Jessica and Rayna as helpers  in the breakout rooms, and I encourage you to ping me if you have any questions (or join the main room).
+
+The goal is to have you start from scratch and do everything. One thing you can do is pick someone to share their screen and then all look at the same screen. You can also share code via hackmd, we're happy to show you how.
+
 ## The workflow!
 
 **Scenario:**
 
-> Sandra has received a collection of bacterial genomes and wants to see how similar they are at a nucleotide level. To do this, she decides to use the [sourmash tool](http://sourmash.rtfd.io/) to compare them and create a figure showing their similarity.
+> Sandra has received a collection of bacterial genomes and wants to see how similar they are at a nucleotide level. To do this, she decides to use the [sourmash tool](http://sourmash.rtfd.io/) to compare them and create a figure showing their similarity. But Sandra wants to use snakemake so that when she needs to add new genomes or ask the same question of different genomes, she can do so easily!
 
 Briefly, sourmash is a tool that compares genomes at a k-mer level. First, it breaks genomes down into k-mers, then it calculates the Jaccard similarity between the genomes, and then it plots the similarities in various ways.
+
+All of the necessary command lines are included below:
 
 ### A. Computing signatures
 
@@ -122,7 +124,7 @@ We'll need to have both `sourmash` and `snakemake-minimal` installed. Let's use 
 **Task:** Create a conda environment containing the latest version of sourmash and snakemake-minimal, installed from bioconda.
 
 :::info
-[Pointer to the relevant section from the conda lesson in week 3](https://github.com/ngs-docs/2021-GGG298/tree/master/Week3-conda_for_software_installation#installation)
+[Pointer to the relevant section from the conda lesson in week 3](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA?view#Installation)
 :::
 
 **Check**: `conda env list` should show that your new environment exists.
@@ -136,12 +138,12 @@ We'll need to have both `sourmash` and `snakemake-minimal` installed. Let's use 
 **Questions:**
 
 Q: If I already have snakemake in an environment and I want to add sourmash, how would I do that?
-A: Activate the environment, and run `conda install -y sourmash` to install sourmash in the current environment. You can also run `conda install -n smash -y snakemake` to install snakemake in a non-active environment.
+A: Activate the environment, and run `conda install -y sourmash` to install sourmash in the current environment. You can also run `conda install -n smash -y snakemake-minimal` to install snakemake in a non-active environment.
 
 #### Stretch: Create a conda environment.yml that you can use with `conda env create -f environment.yml`
 
 :::info
-[See link to section in conda tutorial](https://github.com/ngs-docs/2021-GGG298/tree/master/Week3-conda_for_software_installation#making-and-using-environment-files)
+[See link to section in conda tutorial](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA?view#Making-and-using-environment-files)
 :::
 
 ### 2. Create an automated workflow!
@@ -172,7 +174,7 @@ wget https://osf.io/ajvqk/download -O 5.fa.gz
 ```
 
 :::info
-[Link to relevant snakemake tutorial section](https://github.com/ngs-docs/2021-GGG298/tree/master/Week4-snakemake-for-workflows#add-a-variable-substitution)
+[Link to relevant snakemake tutorial section](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw?view#Create-a-Snakefile)
 :::
 
 **Check:** `snakemake 1.fa.gz` should run the appropriate `wget` command and produce the right file.
@@ -194,7 +196,7 @@ shell: """
 
 **Stretch goal:** build a generic rule using wildcards 
 :::info
-[link to relevant lesson section](https://github.com/ngs-docs/2021-GGG298/tree/master/Week4-snakemake-for-workflows#add-wildcards).
+[link to relevant lesson section](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw?view#Wildcards).
 :::
 
 #### 2.3 Create a snakemake rule to run `sourmash compare`
@@ -217,31 +219,12 @@ A few notes:
 
 **Check:** `snakemake <cmp file>.matrix.png` should run `sourmash plot`.
 
-**One solution:**
-
-```
-rule sourmash_plot:
-    input: "all.cmp", "all.cmp.labels.txt"
-    output: "all.cmp.hist.png", "all.cmp.dendro.png", "all.cmp.matrix.png"
-    shell: "sourmash plot --labels all.cmp"
-
-rule sourmash_compare:
-    input: expand("{sample}.fa.gz.sig", sample=range(1, 6))
-    #input: expand("{sample}.fa.gz.sig", sample=[1,2,3,4,5])
-    #input: "1.fa.gz.sig", "2.fa.gz.sig", "3.fa.gz.sig", "4.fa.gz.sig",
-    #    "5.fa.gz.sig"
-    output: "all.cmp", "all.cmp.labels.txt"
-    shell: "sourmash compare {input} -o all.cmp"
-```
-
-**note** that you have to change the output: block of sourmash_compare to include `all.cmp.labels.txt`.
-
 Stretch goal: build a generic rule using wildcards, so that any `.cmp` file can be turned into a set of plots. 
 
 #### 2.5 Create a default rule that runs the entire workflow
 
 :::info
-[Link to tutorial section on default rules](https://github.com/ngs-docs/2020-GGG201b-lab/blob/master/lab-3.md#create-a-good-default-rule)
+[Link to 201(b) notes on default rules](https://hackmd.io/ofim9y3qQOqWmbln1e2xcw#Bonus-create-a-default-rule)
 :::
 
 **Task:** Create a default rule that asks for the plots to be created.
@@ -252,16 +235,12 @@ Stretch goal: build a generic rule using wildcards, so that any `.cmp` file can 
 #### 2.6 Stretch Goal: use a conda environment file for those commands that run sourmash
 
 :::info
-[Relevant section in snakemake tutorial](https://github.com/ngs-docs/2021-GGG298/tree/master/Week4-snakemake-for-workflows#rule-specific-conda-environments-with-conda-and---use-conda)
+[Relevant section in snakemake tutorial](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA?view#Making-and-using-environment-files)
 :::
 
 **Task:** Create an environment file and name it in a `conda:` block for each snakemake rule that uses sourmash.
 
 **Check:** `snakemake --use-conda` should create a new environment and run the commands in that environment.
-
-**One solution:**
-
-(TBA)
 
 ### Voila, done!
 
