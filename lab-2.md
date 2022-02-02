@@ -1,8 +1,8 @@
 ---
-tags: ggg, ggg2022, ggg298
+tags: ggg, ggg2022,ggg298
 ---
 
-# An Introduction to UNIX for Remote Computing - GGG 298 lab 2 - January 12, 2022
+# An Introduction to UNIX for Remote Computing - week 2, GGG298, January 12, 2022
 
 [![hackmd-github-sync-badge](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ/badge)](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ)
 
