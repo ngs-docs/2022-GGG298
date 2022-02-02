@@ -1,4 +1,8 @@
-# Installing software on remote computers with conda
+---
+tags: ggg, ggg2022,ggg298
+---
+
+# Installing software on remote computers with conda - Week 3, GGG 298 Winter 2022
 
 <!-- this is github.com/2022-GGG298/lab-3-conda/index.md -->
 
