@@ -1,7 +1,10 @@
 ---
-tags: ggg, ggg2021, ggg298
+tags: ggg, ggg2022, ggg298
 ---
-# GGG 298, Jan 2021 - Week 7 - git and GitHub for change tracking!
+# GGG 298, Feb 2022 - Week 6 - git and GitHub for change tracking!
+
+[![hackmd-github-sync-badge](https://hackmd.io/kJX0JtN0RtWwaJj8QfvTgw/badge)](https://hackmd.io/kJX0JtN0RtWwaJj8QfvTgw)
+
 
 [toc]
 
