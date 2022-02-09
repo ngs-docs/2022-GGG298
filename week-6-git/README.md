@@ -74,8 +74,6 @@ git config --global credential.helper cache
 
 Run:
 
-@@week 6
-
 ```
 cd ~/
 git clone https://github.com/USERNAME/2022-ggg298-week6
@@ -412,7 +410,7 @@ EXERCISE:
 
 Give it try - 
 
-* add a bad commit to Snakefile
+* add some bad text to the Snakefile
 * commit it
 * run `git revert HEAD`
 
@@ -581,3 +579,9 @@ For future discussion:
 
 - discuss `git stash` / `git stash apply`
 - discuss `git add` with wildcards, and `git add -f`
+
+Other changes:
+
+* maybe switch to git restore etc instead of checkout
+* don't show git push -f
+* demonstrate a real merge?
