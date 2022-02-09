@@ -27,33 +27,38 @@ Please create a free account at github.com. You'll need to choose a username (th
 
 By default the free accounts allow unlimited private repositories with up to three collaborators, and unlimited public repositories; you can apply for an academic account if you want more collaborators on private repositories.
 
+### Create a personal access token
+
+Create a personal access token (PAT) [per GitHub instructions](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token); you'll need to select the 'repo' scope for it, and I suggest using a 90 day expiration period. 
+
+This PAT will serve as your password for accessing github via the command line. Keep it somewhere handy so you can copy/paste it when you need it!
+
+::::warning
+The PAT is a long string of nonsense characters (usually starting with `ghp_`) that you will use in place of a password, below.
+
+Be sure to save your PAT somewhere where you can find it.
+::::
+
 ### Create a git repository on GitHub
 
-Click on the 'plus' in the upper right of the screen at github.com, and select 'New repository'. Name it `2021-ggg298-week7`. (You can name it whatever you want, but this should make it clear to you and others that this is a time-dated repo; also, all of the examples below use this name :)
+Click on the 'plus' in the upper right of the screen at github.com, and select 'New repository'. Name it `2022-ggg298-week6`. (You can name it whatever you want, but this should make it clear to you and others that this is a time-dated repo used for class; also, all of the examples below use this name :)
 
 Also select 'Initialize this repository with a README'.
 
 Then click 'Create repository'.
 
-After a few seconds, you should be redirected to a web page with a URL like `https://github.com/USERNAME/2021-ggg298-week7`. This is your GitHub URL for this repository; note that it's public (unless you selected private) which means that _anyone_ can get a read-only copy of this repo.
+After a few seconds, you should be redirected to a web page with a URL like `https://github.com/USERNAME/2022-ggg298-week6`. This is your GitHub URL for this repository; note that it's public (unless you selected private) which means that _anyone_ can get a read-only copy of this repo.
 
 Select the URL and copy it into your paste buffer.
 
 ### Log in!
 
-Now, log in to farm, or start up a
-[binder](https://binder.pangeo.io/v2/gh/binder-examples/r-conda/master?urlpath=rstudio)
-and go to the terminal.
+Now, log in to farm.
 
-You'll also need to install snakemake --
+You'll need to have snakemake installed - run:
 
 ```
-conda create -c bioconda -c conda-forge -n 298week7 -y snakemake-minimal
-```
-
-and activate that environment:
-```
-conda activate 298week7
+mamba install -y snakemake-minimal
 ```
 
 ### Optional: set up a password helper
@@ -69,15 +74,17 @@ git config --global credential.helper cache
 
 Run:
 
+@@week 6
+
 ```
 cd ~/
-git clone https://github.com/USERNAME/2021-ggg298-week7
+git clone https://github.com/USERNAME/2022-ggg298-week6
 ```
-This will create a directory `2021-ggg298-week7` under your home directory.
+This will create a directory `2022-ggg298-week6` under your home directory.
 
 Change into it:
 ```
-cd 2021-ggg298-week7
+cd 2022-ggg298-week6
 ```
 and look around with `ls -a`. You'll notice two files: a `.git` subdirectory (this is a directory that git uses to keep information about this repo!) and a `README.md` file that contains the name of the repository. This file is the same README that is displayed at the above GitHub URL when you go to it.
 
@@ -127,8 +134,8 @@ index a5af6ae..f46e8b3 100644
 --- a/README.md
 +++ b/README.md
 @@ -1 +1,3 @@
--# 2021-ggg298-week7
->+# 2021-ggg298-week7
+-# 2022-ggg298-week6
+>+# 2022-ggg298-week6
 >+
 +example repository for ggg 298
 ```
@@ -176,9 +183,11 @@ Let's fix that:
 ```
 git push
 ```
-It should now ask you for a username and a password; enter your GitHub username and password. At the end it will say something like
+It should now ask you for a username and a password; enter your GitHub username and your personal access token. **The password will not be displayed on the screen**.
+    
+Once you're successful, it will say something like
 
-> To https://github.com/ctb/2021-ggg298-week7
+> To https://github.com/ctb/2022-ggg298-week6
 >   a6faf82..e5f2790  main -> main
 
 which tells you that it pushed your changes through changeset e5f2790 to your GitHub URL.
@@ -199,12 +208,13 @@ If you go over to the '...' menu on the far right, you can view the file as of t
 
 What we're doing is the simplest way to use git and GitHub to manage your own repository. There are more complicated options but this is a nice blend of practicality and features (backups, change tracking, sharing options).
 
-![](https://github.com/ngs-docs/2021-GGG298/raw/main/git-one-repo-model.png)
+![](https://raw.githubusercontent.com/ngs-docs/2021-GGG298/latest/git-one-repo-model.png)
 
 ## Let's do it all again!
 
 Let's try that again...
 
+::::warning
 ### On your own, commit and push changes!
 
 Go to your command line on farm.
@@ -230,6 +240,7 @@ Verify that the changes show up on github by refreshing your webpage.
 Look at the change history, view the diffs.
 
 Voila!
+::::
 
 ## Working with multiple files
 
@@ -326,7 +337,15 @@ Go to the GitHub Web interface, and check out the history!
 
 This is really useful when you combine it with good commit messages.
 
+    
+::::info
 QUESTION: why didn't we need to do a git add?
+    
+::::spoiler
+Because git already knows to track the file.
+    
+`git add` is used to tell git it should care about a file. You only need to do it once for each file.
+::::
 
 ## Undoing mistakes or finding older versions
 
@@ -388,6 +407,7 @@ This will *force* the update of your GitHub to your current changeset.
 
 If you catch a bad commit immediately, you can also use `git revert`.
 
+::::warning
 EXERCISE:
 
 Give it try - 
@@ -397,6 +417,7 @@ Give it try -
 * run `git revert HEAD`
 
 what does this do?
+::::
 
 ### 'git show' as a way to retrieve older versions
 
@@ -479,6 +500,7 @@ Remember, you can always add stuff to .gitignore as time goes on. It's good prac
 
 You can edit on GitHub directly! This is a great way to fix little typos and use a friendly editor, but it's a bit clunky for day to day work - you'll see why at the end of this section :)
 
+::::warning
 To edit a file on GitHub via the Web:
 
 Go to your README.md on GitHub.
@@ -510,6 +532,7 @@ and now you'll see:
 >nothing to commit, working tree clean
 
 Here, `git fetch` is updating its local information by going out and looking at GitHub.
+::::
 
 To pull new stuff from GitHub into your repo, do:
 ```
@@ -530,7 +553,7 @@ To do this:
 * go to zenodo.org in a new browser tab
 * log in with GitHub
 * go to upper right menu, select 'GitHub'
-* flip the switch next to your 2021-ggg298-week7 repository
+* flip the switch next to your 2022-ggg298-week6 repository
 
 Now, go back to your github.com tab.
 
@@ -554,7 +577,7 @@ Now go back to zenodo. You should see that a DOI has been assigned! This is a fr
 
 Check out Daniel Standage's blog post on [using github to collaborate with yourself](https://standage.github.io/developer-pull-request-thyself.html) for inspiration!
 
-TODO:
+For future discussion:
 
 - discuss `git stash` / `git stash apply`
 - discuss `git add` with wildcards, and `git add -f`
