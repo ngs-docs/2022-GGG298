@@ -5,6 +5,7 @@ tags: ggg, ggg2022, ggg298
 
 [![hackmd-github-sync-badge](https://hackmd.io/kJX0JtN0RtWwaJj8QfvTgw/badge)](https://hackmd.io/kJX0JtN0RtWwaJj8QfvTgw)
 
+[(Permanent link)](https://github.com/ngs-docs/2022-GGG298/tree/main/lab-6-git)
 
 [toc]
 
