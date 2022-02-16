@@ -396,7 +396,7 @@ features:
 #SBATCH --mail-user=<email>@ucdavis.edu
 
 # initialize conda
-. ~/miniconda3/etc/profile.d/conda.sh
+. ~/mambaforge/etc/profile.d/conda.sh
 
 # activate your desired conda environment
 conda activate base
