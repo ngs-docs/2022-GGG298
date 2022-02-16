@@ -155,6 +155,8 @@ will just log you out of your ssh session and you should log back in
 ::::info
 CHALLENGE: on the farm head node, set yourself up for a 5 second session
 using srun. What happens when the five seconds are up?
+::::spoiler
+There is a minimum resolution.
 ::::
 
 Note also that you can log directly into the given node with `ssh <node name>`. However, this should only be used to check on how the job is doing or to retrieve temporary files; be careful to avoid running any big jobs on the node as this may cause you and others problems.
@@ -459,9 +461,59 @@ snakemake -j 1
 
 How would you run this with more CPUs? Hint: you need to modify BOTH
 your srun command AND your snakemake command.
+::::spoiler
+Use
+```
+srun -c 2 ... --pty /bin/bash
+```
+and then
+```
+snakemake -j 2
+```
+here, the -j 2 and the -c 2 need to match in numbers.
+
+If you specify a larger -j to snakemake than you asked srun to allocate, your job may be killed for using too many computational resources,.
 ::::
 
+::::info
 How would you modify the sbatch script in [A stock sbatch script that includes activating a conda environment](#A-stock-sbatch-script-that-includes-activating-a-conda-environment) to run this in an sbatch environment?
+::::spoiler
+Make a file `snakemake.slurm`, that includes the following lines:
+```
+#!/bin/bash -login
+#SBATCH -p med2                # use 'med2' partition for medium priority
+#SBATCH -J snakemake               # name for job
+#SBATCH -c 4                   # 1 core
+#SBATCH -t 1:00:00             # ask for an hour, max
+#SBATCH --mem=2000             # memory (2000 mb = 2gb)
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=ctbrown@ucdavis.edu
+
+# initialize conda
+. ~/mambaforge/etc/profile.d/conda.sh
+
+# activate your desired conda environment
+conda activate snakemake
+
+# fail on weird errors
+set -e
+set -x
+
+### YOUR COMMANDS GO HERE ###
+# for example,
+snakemake -j 4
+### YOUR COMMANDS GO HERE ###
+
+# Print out values of the current jobs SLURM environment variables
+env | grep SLURM
+
+# Print out final statistics about resource use before job exits
+scontrol show job ${SLURM_JOB_ID}
+
+sstat --format 'JobID,MaxRSS,AveCPU' -P ${SLURM_JOB_ID}.batch
+```
+and then run `sbatch snakemake.slurm`.
+::::
 
 ### Monitoring your jobs with `squeue`
 
@@ -614,7 +666,9 @@ script. What resources does it need?
 
 The other way is to add the following command to the bottom of your HelloWorld.sh script:
 
->sstat --format 'JobID,MaxRSS,AveCPU' -P ${SLURM_JOB_ID}.batch
+```
+sstat --format 'JobID,MaxRSS,AveCPU' -P ${SLURM_JOB_ID}.batch
+```
 
 which will put the following output in your .out file:
 
@@ -687,7 +741,7 @@ setting is one CPU per task per node but is adjusted when using -c.
 Partitions are the subsets of the cluster (or "partitions of the whole
 cluster") that you have access to. I am not an expert on the details,
 but basically they specify (1) a set of computers and (2) a priority
-for running things on 
+for running things on those computers.
 
 When you get your account on an HPC, you'll get a listing of what you have
 partitions you have access to. Here's what my group gets on farm.
