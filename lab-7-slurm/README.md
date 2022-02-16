@@ -8,13 +8,13 @@ tags: ggg, ggg2022, ggg298
 
 [(Permanent link)](https://github.com/ngs-docs/2022-GGG298/tree/main/lab-7-slurm)
 
-This two hour workshop will introduce attendees to the slurm system
+This two hour lab will introduce you to the slurm system
 for using, queuing and scheduling analyses on high performance compute
 clusters. We will also cover cluster computing concepts and talk about
 how to estimate the compute resources you need and measure how much
 you’ve used.
 
-This lesson was originally written by Shannon Joslin for GGG 298 at UC Davis ([see original lesson](https://github.com/ngs-docs/2021-GGG298/blob/latest/Week9-Slurm_and_Farm_cluster_for_doing_analysis/README.md)).
+[toc]
 
 ## What is a cluster?
 
@@ -154,22 +154,25 @@ This will exit the shell. If you _are_ on farm head node already, this
 will just log you out of your ssh session and you should log back in
 ;).
 
+::::info
 CHALLENGE: on the farm head node, set yourself up for a 5 second session
 using srun. What happens when the five seconds are up?
+::::
+
+Note also that you can log directly into the given node with `ssh <node name>`. However, this should only be used to check on how the job is doing or to retrieve temporary files; be careful to avoid running any big jobs on the node as this may cause you and others problems.
 
 ### OR: Submit batch scripts with `sbatch`
 
 The alternative to `srun` is `sbatch`, which is my preferred way (and
-the suggested way!) to run batch job scripts, for several reasons.
+the suggested way!) to run jobs using "batch scripts". This is good for several reasons.
 
-Batch job scripts (also known as job scripts) are scripts that contain
+Batch scripts (also known as job scripts) are scripts that contain
 `#! /bin/bash` at the beginning of each script and are submitted to
 the slurm workload manager by using `sbatch`. They are (mostly) just
-shell scripts, with a few exceptions. We can use the same commands
-that we would use at the command line within our `sbatch` scripts.
+lists of commands you want to run (i.e., shell scripts), and we can use the same commands
+that we would use at the command line within our `sbatch` scripts. There are a few exceptions, tho.
 
-(For more info on bash scripts, see [Automating your analyses and
-executing long-running analyses on remote computers].)
+(For more info on bash scripts, wait 'til lab 8 :')
 
 First, to try out `sbatch` let's create a script called
 `HelloWorld.sh`.
@@ -233,19 +236,19 @@ associated Job ID number:
 
 but with a different number. This is a unique job ID that you can use
 to monitor (with `squeue`) and cancel your job (with `scancel`).
-See [Monitoring your jobs with `squeue`], below.
+See [Monitoring your jobs with `squeue`](#Monitoring-your-jobs-with-squeue), below.
 
 ### Flags to use when submitting jobs with sbatch or srun
 
 We can use a number of different flags to specify resources we want
 from Slurm (we'll cover how to measure these in [Measuring your
-resource usage]).
+resource usage](#Measuring-your-resource-usage)).
 
 * the **partition** we would like to use for our job –
 this will also dictate the _priority_ with which our job is run. This is
 heavily cluster and account dependent; on farm, your datalab-XX accounts
 have access to `high2`, `med2`, and `low2`, for example, which let you run
-on CPU-intensive nodes at high, medium, and low priority.  See [Partitions], below.
+on CPU-intensive nodes at high, medium, and low priority.  See [Partitions](#Partitions), below.
 * the **memory** required to run our job. We can request a specified amount of memory with the following flag: `--mem=<number>Gb`
 * we can have slurm **e-mail** us updates about our job, such as when it starts(`BEGIN`), ends(`END`), if it fails(`FAIL`) or all of the above (`ALL`). There are many other mail-type arguments: REQUEUE, ALL, TIME_LIMIT, TIME_LIMIT_90 (reached 90 percent of time limit), TIME_LIMIT_80 (reached 80 percent of time limit), TIME_LIMIT_50 (reached 50 percent of time limit) and ARRAY_TASKS. We can request slurm emails us with the following flags: `--mail-user=<your_email> --mail-type=<argument>`
 * we can also give jobs specific **names**. To name your job use: `-J <job_name>` Be careful, as there is a limit to the number of characters your job name can be.
@@ -350,12 +353,15 @@ NOT via sbatch.
 In this case, you can use `srun` to allocate yourself a node, and then
 go run the script yourself.
 
+::::info
 CHALLENGE: Use `srun` to allocate a node, and then run `HelloWorld.sh`.
+::::
 
 Question: do you get the e-mails and the output files as with sbatch?
-
+::::spoiler
 (No, because when you're running the script via bash inside an `srun`,
 slurm doesn't know it's a special script.)
+::::
 
 ### Choosing between `srun` and `sbatch`
 
@@ -369,8 +375,8 @@ I almost always prefer `sbatch`. There are a bunch of reasons -
 * the script is a text file, so I can correct it if I get something wrong!
 * the script specifies the resources at the top, so I can edit those easily!
 * I can comment the script so I can understand it later.
-* I can use version control to track changes to my sbatch scripts (see [Keeping Track of Your Files with Version Control])
-* I can run one (or a dozen) sbatch scripts at various priorities, and can be notified by e-mail when they're done. This lets me walk away from the computer :)
+* I can use version control to track changes to my sbatch scripts (see [Lab 6, git and GitHub for change tracking!](https://hackmd.io/kJX0JtN0RtWwaJj8QfvTgw?view))
+* I can run one (or a dozen) sbatch scripts at various priorities, and can be notified by e-mail when they're done. This lets me walk away from the computer to do other things!!
 
 ### A stock sbatch script that includes activating a conda environment
 
@@ -378,8 +384,8 @@ Here's the sbatch script I usually start with. It has a few nice
 features:
 
 * it lists the parameters that I usually end up modifying (`-c`, `-t`, `--mem`)
-* it supports conda environment activation (see [Installing software on remote computers with conda])
-* it prints out the resources I actually used at the end! (See [Measuring your resource usage] below)
+* it supports conda environment activation
+* it prints out the resources I actually used at the end! (See [Measuring your resource usage](#Measuring-your-resource-usage) below)
 
 ```
 #!/bin/bash -login
@@ -417,7 +423,7 @@ sstat --format 'JobID,MaxRSS,AveCPU' -P ${SLURM_JOB_ID}.batch
 
 We'll talk a bit more about the choices made in this script,
 below, when we talk about choosing your CPU and memory.
-See [Measuring your resource usage], below.
+See [Measuring your resource usage](#Measuring-your-resource-usage), below.
 
 But first, let's cover...
 
@@ -425,6 +431,7 @@ But first, let's cover...
 
 ### Trick 1: running `srun` inside of a screen.
 
+@@
 Back in [Automating your analyses and executing long-running analyses on remote computers], we introduced you to [Persistent sessions with screen and tmux].
 
 If you are using srun to run commands, it is just like any other interactive
@@ -445,6 +452,8 @@ In our previous workshop, we introduced you to [Automating your
 analyses with the snakemake workflow system]. You can use snakemake
 inside of an srun or sbatch script!
 
+@@
+::::info
 CHALLENGE: Try using srun to run the following commands:
 
 ```
@@ -456,6 +465,7 @@ snakemake -j 1
 
 How would you run this with more CPUs? Hint: you need to modify BOTH
 your srun command AND your snakemake command.
+::::
 
 How would you modify the sbatch script in [A stock sbatch script that includes activating a conda environment] to run this in an sbatch environment?
 
@@ -550,7 +560,11 @@ To cancel all of the jobs that belong to you, use the `-u`flag.
 scancel -u <username>
 ```
 
-CHALLENGE: Use `srun` to set yourself up with a 10 minute session on high2; then, in the session, use `squeue -u` to find the job ID of your session; then, `scancel` it. Alternatively, you can cancel ALL your jobs with `scancel -u`.
+::::info
+CHALLENGE: Use `srun` to set yourself up with a 10 minute session on high2; then, in the session, use `squeue -u` to find the job ID of your session; then, `scancel` it. 
+
+You can cancel ALL your jobs with `scancel -u <username>`, but be careful :).
+::::
 
 ## More on resources and queues and sharing
 
@@ -599,8 +613,10 @@ The first is how much time it took, the second is the max amount of memory
 
 You can use this to measure the amount of time it takes to run a script.
 
+::::info
 CHALLENGE: Use `/usr/bin/time -v` to run the HelloWorld.sh
 script. What resources does it need?
+::::
 
 The other way is to add the following command to the bottom of your HelloWorld.sh script:
 
@@ -613,6 +629,8 @@ which will put the following output in your .out file:
 >37971877.batch|952K|00:00.000
 >~~~
 
+@@
+::::info
 OPTIONAL CHALLENGE: Let's do this to look at the snakemake workflow!
 
 Steps:
@@ -622,6 +640,7 @@ Steps:
 * submit the script with `sbatch`
 * ...wait...
 * inspect the output file.
+::::
 
 ### Nodes vs CPUs vs tasks
 
@@ -737,20 +756,3 @@ nicely.
 
 You may never need to use a really big compute cluster to run
 things. But if you do, you're at least ready to get started :)
-
-## Some final thoughts before departing farm and moving into the cloud.
-
-This is the last time we'll use farm. &lt;waves goodbye&gt;
-
-For our last and final workshop in this series, [Making use of
-on-demand “cloud” computers from Amazon Web Services], we'll show you
-how to rent computers from Amazon. In our view, this is a great
-fallback when you have a burst computing need, or don't have access to
-specific resources that you need (like GPUs).
-
-Importantly, most of the stuff we've learned for remote computing will
-work just fine no matter what system we use. Shell, text editing,
-ssh, conda, project organization, shell scripting, version control,
-and snakemake will all work on any modern UNIX system.
-
-...and that's why we taught them to you :).
