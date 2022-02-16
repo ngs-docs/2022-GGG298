@@ -32,6 +32,10 @@ Where: Zoom on Canvas
 
 Lab 1 - January 5th, 2022 - [An RNAseq workflow as an starting point](https://hackmd.io/0GPKdxPnQ7KFPoyI_v5Eag?view)
 
+Lab 2 - January 12th, 2022 - [Introduction to UNIX for Remote Computing](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ?view).
+
+Lab 3 - January 19th, 2022 - [Installing software on remote computers with conda](https://hackmd.io/yPoKMEu2RYCkO4PP8EpEJA)
+
 ### Discussion
 
 What: read & discuss a paper.
@@ -82,13 +86,9 @@ These will be lab practicals where we take a solid look at a given piece of tech
 
 From week 2 onwards, there will be ~20 minutes of videos to watch before we get together. Please watch them by 9:30am. At 9:30, Titus will join the zoom. Class will go 'til noon (with a 10 minute biobreak at 10:30). During this period we'll work through the day's lesson interactively.
 
-<!--
 You can view the lab topics here:
 
 https://github.com/ngs-docs/2022-GGG298
--->
-
-Lab 2 - [Introduction to UNIX for Remote Computing](https://hackmd.io/4RgZmv_2QsSLutdHdndKSQ?view).
 
 ## Paper discussions
 
@@ -163,19 +163,19 @@ Please provide your answer in [this form](https://docs.google.com/forms/d/e/1FAI
 
 ### Seventh reading: due Thursday, Feb 17th.
 
-Please skim [Functionally Enigmatic Genes: A Case Study of the Brain Ignorome](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0088889), and then answer the following question:
-
-Suppose that you were a program manager for a funding agency with $100m to spend in 5 years, and you wanted to fund ignorome studies (in a field of your choice - doesn't have to be human/neuro). What would your directions to applicants be, and/or how would you set up your granting program?
-
 Please provide your answer in [this form](https://docs.google.com/forms/d/e/1FAIpQLSegaKpzD2IaMVQ-dMRQpkw7wb0huhJLtf774O6jkR7GSWFhfg/viewform) by midnight on Thursday, February 17th.
+
+Please read [There is a reproducibility crisis in psychology and we need to act on it](http://deevybee.blogspot.com/2016/03/there-is-reproducibility-crisis-in.html), and then answer the following question:
+
+How might one (or more) of the problems discussed for psychology map onto reproducibility challenges in biology/biomedicine? Are there challenges that are unique to biology as well, or challenges that are in psych but not in bio/biomed?
 
 ---
 
 ### Eighth reading: due Thursday, Feb 24th.
 
-Please read [There is a reproducibility crisis in psychology and we need to act on it](http://deevybee.blogspot.com/2016/03/there-is-reproducibility-crisis-in.html), and then answer the following question:
+Please skim [Functionally Enigmatic Genes: A Case Study of the Brain Ignorome](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0088889), and then answer the following question:
 
-How might one (or more) of the problems discussed for psychology map onto reproducibility challenges in biology/biomedicine? Are there challenges that are unique to biology as well, or challenges that are in psych but not in bio/biomed?
+Suppose that you were a program manager for a funding agency with $100m to spend in 5 years, and you wanted to fund ignorome studies (in a field of your choice - doesn't have to be human/neuro). What would your directions to applicants be, and/or how would you set up your granting program?
 
 Please provide your answer in [this form](https://docs.google.com/forms/d/e/1FAIpQLSegaKpzD2IaMVQ-dMRQpkw7wb0huhJLtf774O6jkR7GSWFhfg/viewform) by midnight on Thursday, February 24th.
 
