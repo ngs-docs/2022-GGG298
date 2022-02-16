@@ -1,4 +1,12 @@
-# Executing large analyses on HPC clusters with slurm
+---
+tags: ggg, ggg2022, ggg298
+---
+# GGG 298, Feb 2022 - Week 7 - Executing large analyses on HPC clusters with slurm!
+
+[![hackmd-github-sync-badge](https://hackmd.io/7wL_dBfPRM-csn2V0CQgCA/badge)](https://hackmd.io/7wL_dBfPRM-csn2V0CQgCA)
+
+
+[(Permanent link)](https://github.com/ngs-docs/2022-GGG298/tree/main/lab-7-slurm)
 
 This two hour workshop will introduce attendees to the slurm system
 for using, queuing and scheduling analyses on high performance compute
@@ -16,7 +24,7 @@ are accessed by logging onto one computer (**head node**) and
 resources (other computers) are acquired by asking for resources from
 job schedulers.
 
-![](slurm-cluster.png)
+![](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-7-slurm/slurm-cluster.png)
 
 Image modified from [vrlab](http://www.vrlab.umu.se/documentation/guides/beginner-guide)
 
@@ -41,7 +49,7 @@ scheduler you will be submitting jobs to is specific to the cluster
 you are using at your institution but they all have the following
 general structure:
 
-![](slurm-scheduler.png)
+![](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-7-slurm/slurm-scheduler.png)
 
 The job scheduler evaluates when resources will be dedicated to a job based on the:
 
@@ -637,7 +645,7 @@ then as many tasks will be allocated to per node as possible.  The
 `-n` flag will determine the number of tasks to run. The default Slurm
 setting is one CPU per task per node but is adjusted when using -c.
 
-![](slurm-nodes.png)
+![](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-7-slurm/slurm-nodes.png)
 
 ### Partitions
 
