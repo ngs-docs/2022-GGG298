@@ -5,8 +5,7 @@ tags: ggg, ggg2022, ggg298
 
 [![hackmd-github-sync-badge](https://hackmd.io/7wL_dBfPRM-csn2V0CQgCA/badge)](https://hackmd.io/7wL_dBfPRM-csn2V0CQgCA)
 
-
-[(Permanent link)](https://github.com/ngs-docs/2022-GGG298/tree/main/lab-7-slurm)
+[(Permanent link)](https://github.com/ngs-docs/2022-GGG298/tree/main/lab-7-slurm/README.md)
 
 This two hour lab will introduce you to the slurm system
 for using, queuing and scheduling analyses on high performance compute
@@ -138,8 +137,7 @@ You can request more or different resources by using the following flags:
 * `-c <number>` = request a certain number of CPUs
 
 Here, the `-c` flag is the same number you would use for `snakemake
--j` to run many things in parallel; see [Automating your analyses with
-the snakemake workflow system] for the snakemake lesson. (We'll show
+-j` to run many things in parallel; see [the snakemake lesson](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw?view). (We'll show
 you how to run snakemake inside of slurm below!)
 
 **If your prompt doesn't have `farm` in it** - that is, if you're logged into
@@ -431,34 +429,30 @@ But first, let's cover...
 
 ### Trick 1: running `srun` inside of a screen.
 
-@@
-Back in [Automating your analyses and executing long-running analyses on remote computers], we introduced you to [Persistent sessions with screen and tmux].
-
 If you are using srun to run commands, it is just like any other interactive
 shell - if you close your laptop, or your network is disconnected, you'll
 terminate the shell.
 
 So I often use `screen` to make my `srun` sessions resilient to laptop closure
-and shell termination.
-
-There's one key trick here: run `screen` _first_, then run `srun`.
+and shell termination. You can read more about screen and tmux [here](https://ngs-docs.github.io/2021-august-remote-computing/automating-your-analyses-and-executing-long-running-analyses-on-remote-computers.html#persistent-sessions-with-screen-and-tmux); the basic idea is that they allow you to stash away a running shell and return to it later.
 
 (I'll show a demo, you don't need to follow along - just know that this
 is a possibility.)
 
+There's one key trick here: run `screen` _first_, then run `srun`.
+
 ### Trick 2: running snakemake inside of an sbatch script.
 
 In our previous workshop, we introduced you to [Automating your
-analyses with the snakemake workflow system]. You can use snakemake
+analyses with the snakemake workflow system](https://hackmd.io/DCtAjstXRUeUry-w0JUEqw?view). You can use snakemake
 inside of an srun or sbatch script!
 
-@@
 ::::info
 CHALLENGE: Try using srun to run the following commands:
 
 ```
 conda activate snakemake
-cd ~/snakemake_lesson
+cd ~/GGG298_lab4/
 rm *.zip *.html
 snakemake -j 1
 ```
@@ -467,7 +461,7 @@ How would you run this with more CPUs? Hint: you need to modify BOTH
 your srun command AND your snakemake command.
 ::::
 
-How would you modify the sbatch script in [A stock sbatch script that includes activating a conda environment] to run this in an sbatch environment?
+How would you modify the sbatch script in [A stock sbatch script that includes activating a conda environment](#A-stock-sbatch-script-that-includes-activating-a-conda-environment) to run this in an sbatch environment?
 
 ### Monitoring your jobs with `squeue`
 
@@ -627,15 +621,37 @@ which will put the following output in your .out file:
 >~~~
 >JobID|MaxRSS|AveCPU
 >37971877.batch|952K|00:00.000
+>43890244.batch|1056K|00:01.000
+>Name                : myjob
+>User                : datalab-01
+>Account             : ctbrowngrp
+>Partition           : med2
+>Nodes               : c6-73
+>Cores               : 1
+>GPUs                : 0
+>State               : COMPLETED
+>ExitCode            : 0:0
+>Submit              : 2022-02-16T10:37:37
+>Start               : 2022-02-16T10:37:40
+>End                 : 2022-02-16T10:37:43
+>Waited              : 00:00:03
+>Reserved walltime   : 00:05:00
+>Used walltime       : 00:00:03
+>Used CPU time       : 00:00:01
+>% User (Computation): 76.95%
+>% System (I/O)      :  0.00%
+>Mem reserved        : 2000M/node
+>Max Mem used        : 1.03M (c6-73)
+>Max Disk Write      : 20.48K (c6-73)
+>Max Disk Read       : 13.31M (c6-73)
 >~~~
 
-@@
 ::::info
 OPTIONAL CHALLENGE: Let's do this to look at the snakemake workflow!
 
 Steps:
 
-* create the sbatch script to run snakemake - see [A stock sbatch script that includes activating a conda environment]
+* create the sbatch script to run snakemake - see the section [A stock sbatch script that includes activating a conda environment](#A-stock-sbatch-script-that-includes-activating-a-conda-environment)
 * remove *.zip and *.html
 * submit the script with `sbatch`
 * ...wait...
