@@ -35,9 +35,7 @@ multiple files around.
 
 For this, we're going to make the MobaXterm folk use a shell window:
 
-@@
-
-![](moba-shell.png)
+![](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-8-remote-computing/moba-shell.png)
 
 OK, so what options are there when using 'scp'?
 
@@ -212,7 +210,7 @@ over to farm (where you may not be logged in), farm may not have access
 to download it. There is no one-size-fits-all solution to this,
 unfortunately.
 
-@@
+::::info
 **CHALLENGE:**
 
 - Pick any book from https://www.gutenberg.org/
@@ -220,6 +218,7 @@ unfortunately.
 - Copy the URL
 - Use `curl` to download it to farm
 - Look at it with `head`
+::::
 
 ## Dealing with files: some recommendations
 
@@ -261,9 +260,7 @@ so that you can track your work.
 This is because, fundamentally, we use computers to first _explore_ data
 sets, before refining and producing.
 
-@@
-
-![Figure 1 from Stoudt et al., 2021](proj-journal.pcbi.1008770.g001.PNG)
+![Figure 1 from Stoudt et al., 2021](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-8-remote-computing/proj-journal.pcbi.1008770.g001.PNG)
 
 So we need to organize our projects for iteration, dead-ends, and
 tracking processes over time - potentially months, or years. And that's
@@ -274,9 +271,7 @@ For more discussion and details, I highly recommend
 
 ## One example: a rough bioinformatics workflow
 
-@@
-
-![a bioinformatics workflow](proj-workflow.png)
+![a bioinformatics workflow](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-8-remote-computing/proj-workflow.png)
 
 
 ## Sending and Receiving Data
@@ -337,8 +332,9 @@ md5sum -c \@mini_A-torda.md5
 
 But if we navigate into the `data/` directory we can see there is a `mini-chr1.fna.gz` file there too. Are they the same?
 
-@@
+::::info
 **CHALLENGE:** Determine if the two `mini-chr1.fna.gz` files are the same.
+::::
 
 ---
 
@@ -491,20 +487,14 @@ In bioinformatics, _organization is everything_. It allows us to be efficient in
 
 Here we can see how organization allows for a tidy workspace:
 
-@@
-
-![project paths](proj-paths_one_project.png)
+![project paths](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-8-remote-computing/proj-paths_one_project.png)
 
 The list of files up top isn't too cringe worthy if you only have one project. But multiple projects or experiments in one directory results in an organizational disaster...
 
-@@
-
-![paths](proj-paths_multiple_projects.png)
-
-@@
+![paths](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-8-remote-computing/proj-paths_multiple_projects.png)
 
 I like to have the following directory structure:
-![directory structure](proj-example_directory_str.png)
+![directory structure](https://raw.githubusercontent.com/ngs-docs/2022-GGG298/main/lab-8-remote-computing/proj-example_directory_str.png)
 
 ## Naming files
 
@@ -707,9 +697,9 @@ do
 done
 ```
 
-@@
+::::info
 **CHALLENGE:** Run the above loop in a shell script called `rename_file.sh`.
-
+::::
 
 Now that we're pretty sure it all looks good, let's run it for realz - the shell script should look like this:
 
@@ -777,8 +767,9 @@ wc -l ./subset/*
 
 (This is incredibly useful. You have no idea :)
 
-@@
+::::info
 **CHALLENGE:** Can you rename all of your files in subset/ to have 'subset.fq' at the end?
+::::
 
 ### Variables
 
@@ -871,13 +862,12 @@ This command runs the script:
 bash set_e.sh
 ```
 
-@@
-
+::::info
 **CHALLENGE**
 
 1. What happens when you run the bash script above **with** and **without** the `set -e` option?
 2. There is an error in the bash script. How would you fix the script? (Bonus: try adding `set -x` to your bash script)
-
+::::
 
 ## If statements
 
@@ -1005,10 +995,9 @@ else
 fi
 ```
 
-@@
-
+::::info
 **CHALLENGE:** How might you use this script in a for loop to compare a range of numbers to one number? For example, suppose you wanted to check the $2 parameter against the numbers `20 30 40 50 60 70` to see if it matched one of them?
-
+::::
 
 ## Persistent sessions with screen and tmux
 
