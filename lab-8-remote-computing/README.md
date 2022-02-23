@@ -139,7 +139,7 @@ So what I sometimes do is use a 'transfer' directory.
 On farm,
 ```
 mkdir ~/transfer
-cp ~/2021-remote-computing/2cities/README.md ~/transfer/
+cp ~/2021-remote-computing-binder/2cities/README.md ~/transfer/
 ```
 and now (on your laptop) you can just do things like
 ```
@@ -574,7 +574,7 @@ A script is like a recipe of commands for the computer to execute. We're teachin
 
 Why and when would we want to use scripts vs. typing commands directly at the terminal?
 
-   - Automate: don't have to remember all the commands and type then one at a time
+   - Automate: don't have to remember all the commands and type them one at a time
    - Scale up: can use same script for multiple samples, multiple processes
    - Reproduce & share: easier to reproduce or share analyses because it's all written down
    - Version control: place text files in version control systems like git!
