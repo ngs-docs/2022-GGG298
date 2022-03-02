@@ -1,4 +1,7 @@
-# Structuring your projects for current and future you; and shell scripting & automation (Lab 8)
+---
+tags: ggg, ggg2022, ggg298
+---
+# GGG 298, Feb 2022 - Week 8 - Structuring your projects for current and future you; and shell scripting & automation 
 
 [![hackmd-github-sync-badge](https://hackmd.io/quo3cifsTnKTmNAUU9LMQQ/badge)](https://hackmd.io/quo3cifsTnKTmNAUU9LMQQ)
 
@@ -23,11 +26,14 @@ By the end of this lesson, students will:
 * understand _why_ to setup projects in a specific manner
 * begin to plan file and directory names for their own workflows
 
-@@
-Before continuing, please:
+## Log in and get set up with some files
 
-* be sure that you can log into farm.cse.ucdavis.edu with your datalab-XX account
-* do [pre-load some files into your account](connecting-to-remote-computers-with-ssh.html#loading-some-files-into-your-account)
+Log into your datalab-XX account at farm and run:
+
+```
+git clone https://github.com/ngs-docs/2021-remote-computing-binder/
+```
+to take [this set of files](https://github.com/ngs-docs/2021-remote-computing-binder/) and put them in your account.
 
 ## Transferring files around efficiently
 
@@ -133,7 +139,7 @@ So what I sometimes do is use a 'transfer' directory.
 On farm,
 ```
 mkdir ~/transfer
-cp ~/2021-remote-computing/2cities/README.md ~/transfer/
+cp ~/2021-remote-computing-binder/2cities/README.md ~/transfer/
 ```
 and now (on your laptop) you can just do things like
 ```
@@ -568,7 +574,7 @@ A script is like a recipe of commands for the computer to execute. We're teachin
 
 Why and when would we want to use scripts vs. typing commands directly at the terminal?
 
-   - Automate: don't have to remember all the commands and type then one at a time
+   - Automate: don't have to remember all the commands and type them one at a time
    - Scale up: can use same script for multiple samples, multiple processes
    - Reproduce & share: easier to reproduce or share analyses because it's all written down
    - Version control: place text files in version control systems like git!
