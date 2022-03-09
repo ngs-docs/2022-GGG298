@@ -5,6 +5,8 @@ tags: ggg, ggg2022, ggg298
 
 [![hackmd-github-sync-badge](https://hackmd.io/SJxLcVlTTRuY43gB7j_CIw/badge)](https://hackmd.io/SJxLcVlTTRuY43gB7j_CIw)
 
+[(Permanent location)](https://github.com/ngs-docs/2022-GGG298/blob/main/lab-10-rmarkdown/README.md)
+
 
 ## sourmash
 
